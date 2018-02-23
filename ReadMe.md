@@ -1,3 +1,10 @@
+# ______________________________________________________________________________
+# Shane Austrie:
+# This repo is Make School's CS 3 course. I'm going through it independently
+# in order to improve my knowledge of python and for the fun of practicing
+# CS fundamentals.
+# ______________________________________________________________________________
+
 # CS 3: Core Data Structures & Algorithms
 
 ## Course Schedule
