@@ -14,7 +14,14 @@ def factorial(n):
 
 def factorial_iterative(n):
     # TODO: implement the factorial function iteratively here
-    pass
+    if n < 0:
+        raise ValueError('factorial is undefined for n = {}'.format(n))
+    elif n == 0:
+        return 1
+    total = 1
+    while n > 1:
+        total *= n
+        n -= 1
     # once implemented, change factorial (above) to call factorial_iterative
     # to verify that your iterative implementation passes all tests
 
