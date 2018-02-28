@@ -1,26 +1,83 @@
 #!python
 
+''' This method is O(N)'''
 def contains(text, pattern):
     """Return a boolean indicating whether pattern occurs in text."""
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement contains here (iteratively and/or recursively)
+    return (False if (find_index(text, pattern) is None) else True)
 
-
+''' This method is O(N)'''
 def find_index(text, pattern):
     """Return the starting index of the first occurrence of pattern in text,
     or None if not found."""
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement find_index here (iteratively and/or recursively)
+    if pattern is "":
+        return 0
 
+    i2 = 0
+    index = None
+    for i in range(0, len(text)):
+        a = text[i]
+        b = pattern[i2]
+        if a is b:
+            i2 += 1
+            if i2 is len(pattern):
+                index = i - i2 + 1
+                break
+        else:
+            i2 = 0
+            b = pattern[i2]
+            if a is b:
+                i2 += 1
+                if i2 is len(pattern):
+                    index = i - i2 + 1
+                    break
+            else:
+                i2 = 0
 
+    return index
+
+''' This method is O(N)'''
 def find_all_indexes(text, pattern):
     """Return a list of starting indexes of all occurrences of pattern in text,
     or an empty list if not found."""
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement find_all_indexes here (iteratively and/or recursively)
+    indexes = []
+    if pattern is "":
+        for i in range(0, len(text)):
+            indexes.append(i)
+        return indexes
+
+    i2 = 0
+    for i in range(0, len(text)):
+        a = text[i]
+        b = pattern[i2]
+        if a is b:
+            i2 += 1
+            if i2 is len(pattern):
+                indexes.append(i - i2 + 1)
+                i2 = 0
+                b = pattern[i2]
+                if len(pattern) > 1 and a is b:
+                    i2 += 1
+        else:
+            i2 = 0
+            b = pattern[i2]
+            if a is b:
+                i2 += 1
+                if i2 is len(pattern):
+                    index = i - i2 + 1
+                    break
+            else:
+                i2 = 0
+
+    return indexes
 
 
 def test_string_algorithms(text, pattern):

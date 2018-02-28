@@ -12,21 +12,53 @@ def is_palindrome(text):
     backwards, ignoring punctuation, whitespace, and letter casing."""
     # implement is_palindrome_iterative and is_palindrome_recursive below, then
     # change this to call your implementation to verify it passes all tests
+    text = text.lower().replace(" ", "").replace(",", "").replace(".", "")
+    text = text.replace("!", "").replace("?", "").replace("-", "").replace("'", "")
     assert isinstance(text, str), 'input is not a string: {}'.format(text)
-    return is_palindrome_iterative(text)
-    # return is_palindrome_recursive(text)
+    # return is_palindrome_iterative(text)
+    return is_palindrome_recursive(text)
 
 
 def is_palindrome_iterative(text):
     # TODO: implement the is_palindrome function iteratively here
-    pass
+
+    i2 = len(text) - 1
+    for i in range(0, int(len(text) / 2)):
+        if text[i] is not text[i2]:
+            return False
+        i2 -= 1
+    return True
     # once implemented, change is_palindrome to call is_palindrome_iterative
     # to verify that your iterative implementation passes all tests
 
 
 def is_palindrome_recursive(text, left=None, right=None):
     # TODO: implement the is_palindrome function recursively here
-    pass
+    if text is "" or len(text) is 1:
+        return True
+
+
+    if left is None:
+        left = 0
+    if right is None:
+        right = len(text) - 1
+
+    if text[left] is not text[right]:
+        return False
+
+
+    if (len(text) % 2) is not 0:
+        if left + 1 is int(len(text) / 2):
+            return True
+    else:
+        if left + 1 is right:
+            return True
+    left += 1
+    right -= 1
+    return is_palindrome_recursive(text, left, right)
+
+
+
     # once implemented, change is_palindrome to call is_palindrome_recursive
     # to verify that your iterative implementation passes all tests
 
