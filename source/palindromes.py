@@ -12,6 +12,7 @@ def is_palindrome(text):
     backwards, ignoring punctuation, whitespace, and letter casing."""
     # implement is_palindrome_iterative and is_palindrome_recursive below, then
     # change this to call your implementation to verify it passes all tests
+    # Change this to either use regex or update method to move around special chars
     text = text.lower().replace(" ", "").replace(",", "").replace(".", "")
     text = text.replace("!", "").replace("?", "").replace("-", "").replace("'", "")
     assert isinstance(text, str), 'input is not a string: {}'.format(text)
