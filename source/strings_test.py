@@ -6,6 +6,10 @@ import unittest
 
 class StringsTest(unittest.TestCase):
 
+    def test_custom_test(self):
+        print("custom_test")
+        assert find_index('aaaaab','aaab') == 2
+
     def test_contains_with_matching_patterns(self):
         # Positive test cases (examples) with matching patterns
         assert contains('abc', '') is True  # all strings contain empty string
