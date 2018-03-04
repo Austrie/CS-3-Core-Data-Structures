@@ -79,6 +79,8 @@ class LinkedList(object):
         if not (0 <= index < self.size):
             raise ValueError('List index out of range: {}'.format(index))
         # TODO: Find the node at the given index and return its data
+        if index == (self.size - 1):
+            return self.tail.data if not node else self.tail
         i = 0
         found = False
         currNode = self.head
