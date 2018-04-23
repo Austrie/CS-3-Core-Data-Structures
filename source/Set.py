@@ -36,5 +36,9 @@ class Set(object):
         return self.list.delete(item)
 
 if __name__ == '__main__':
-    set = Set([0, 1, 2, 3, 3])
+    set = Set()
+    for i in range(5):
+        set.add(i)
+    print("Set contains 4: {}".format(set.contains(4)))
+    set.remove(4)
     print(set.list)

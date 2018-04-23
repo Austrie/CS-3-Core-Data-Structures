@@ -27,11 +27,13 @@ class BinaryTreeNode(object):
         """Return the height of this node (the number of edges on the longest
         downward path from this node to a descendant leaf node).
         TODO: Best and worst case running time: ??? under what conditions?"""
+        if self.left is None and self.right is None:
+            return 0
         height = 1
         # TODO: Check if left child has a value and if so calculate its height
         height_of_left = 0 if self.left is None else self.left.height()
         # TODO: Check if right child has a value and if so calculate its height
-        height_of_right = 0 if self.left is None else self.left.height()
+        height_of_right = 0 if self.right is None else self.right.height()
         # Return one more than the greater of the left height and right height
         height +=  height_of_left if height_of_left > height_of_right else height_of_right
         return height
@@ -93,10 +95,7 @@ class BinarySearchTree(object):
             return
         # Find the parent node of where the given item should be inserted
         parent = self._find_parent_node_recursive(item, self.root)
-        #edge case if item is the root node
-        if parent is None:
-            self.root.data = item
-            return
+
         # TODO: Check if the given item should be inserted left of parent node
         if parent.data > item:
             # TODO: Create a new node and set the parent's left child
@@ -142,9 +141,9 @@ class BinarySearchTree(object):
             # Return the found node
             return node
         elif node.data > item:
-            return node.left
+            return self._find_node_recursive(item, node.left)
         elif node.data < item:
-            return node.right
+            return self._find_node_recursive(item, node.right)
 
     def _find_parent_node_iterative(self, item):
         """Return the parent node of the node containing the given item
