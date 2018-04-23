@@ -6,6 +6,10 @@ def is_sorted(items):
     TODO: Running time: ??? Why and under what conditions?
     TODO: Memory usage: ??? Why and under what conditions?"""
     # TODO: Check that all adjacent items are in order, return early if not
+    for i in range(0, len(items) - 1):
+        if items[i] > items[i + 1]:
+            return False
+    return True
 
 
 def bubble_sort(items):
@@ -15,6 +19,18 @@ def bubble_sort(items):
     TODO: Memory usage: ??? Why and under what conditions?"""
     # TODO: Repeat until all items are in sorted order
     # TODO: Swap adjacent items that are out of order
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(0, len(items) - 1):
+            if items[i] > items[i + 1]:
+                temp = items[i]
+                items[i] = items[i + 1]
+                items[i + 1] = temp
+                swapped = True
+
+    return items
+
 
 
 def selection_sort(items):
@@ -25,6 +41,20 @@ def selection_sort(items):
     # TODO: Repeat until all items are in sorted order
     # TODO: Find minimum item in unsorted items
     # TODO: Swap it with first unsorted item
+    for i in range(0, len(items) - 1):
+        minimum = items[i]
+        position = i
+        for j in range(i + 1, len(items)):
+            if minimum > items[j]:
+                minimum = items[j]
+                position = j
+        temp = items[i]
+        items[i] = minimum
+        items[position] = temp
+
+    return items
+
+
 
 
 def insertion_sort(items):
@@ -35,7 +65,17 @@ def insertion_sort(items):
     # TODO: Repeat until all items are in sorted order
     # TODO: Take first unsorted item
     # TODO: Insert it in sorted order in front of items
-
+    if items == []:
+        return items
+    for i in range(1, len(items)):
+        for j in range(0, i):
+            print(j)
+            # print(lis)
+            if items[i] < items[j]:
+                temp = items.pop(i)
+                items.insert(j, temp)
+                break
+    return items
 
 def merge(items1, items2):
     """Merge given lists of items, each assumed to already be in sorted order,
@@ -45,6 +85,34 @@ def merge(items1, items2):
     # TODO: Repeat until one list is empty
     # TODO: Find minimum item in both lists and append it to new list
     # TODO: Append remaining items in non-empty list to new list
+    if items1 == []:
+        return items2
+    elif items2 == []:
+        return items1
+    lis = []
+    item1 = items1.pop(0)
+    item2 = items2.pop(0)
+    while item1 != None and item2 != None:
+        if item1 < item2:
+            lis.append(item1)
+            if items1 == []:
+                lis.append(item2)
+                break
+            else:
+                item1 = items1.pop(0)
+        else:
+            lis.append(item2)
+            if items2 == []:
+                lis.append(item1)
+                break
+            else:
+                item2 = items2.pop(0)
+
+    while items1 != []:
+        lis.append(items1.pop(0))
+    while items2 != []:
+        lis.append(items2.pop(0))
+    return lis
 
 
 def split_sort_merge(items):
@@ -56,6 +124,13 @@ def split_sort_merge(items):
     # TODO: Split items list into approximately equal halves
     # TODO: Sort each half using any other sorting algorithm
     # TODO: Merge sorted halves into one list in sorted order
+    if len(items) < 2:
+        return items
+    middle = int(len(items) / 2)
+    lis1 = insertion_sort(items[0 : middle])
+    lis2 = insertion_sort(items[middle : len(items)])
+    return merge(lis1, lis2)
+
 
 
 def merge_sort(items):
@@ -67,6 +142,24 @@ def merge_sort(items):
     # TODO: Split items list into approximately equal halves
     # TODO: Sort each half by recursively calling merge sort
     # TODO: Merge sorted halves into one list in sorted order
+    if len(items) < 2:
+        return items
+    elif len(items) is 2:
+        if items[0] > items[1]:
+            temp = items[0]
+            items[0] = items[1]
+            items[1] = temp
+            return items
+        else:
+            return items
+    else:
+        middle = int(len(items) / 2)
+        lis1 = items[0 : middle]
+        lis2 = items[middle : len(items)]
+        lis1 = merge_sort(lis1)
+        lis2 = merge_sort(lis2)
+        return merge(lis1, lis2)
+
 
 
 def partition(items, low, high):
@@ -81,6 +174,22 @@ def partition(items, low, high):
     # TODO: Move items less than pivot into front of range [low...p-1]
     # TODO: Move items greater than pivot into back of range [p+1...high]
     # TODO: Move pivot item into final position [p] and return index p
+    if low > high or low < 0 or high >= len(items):
+        return None
+    
+    middleIndex = ((high - low) // 2) + low
+    middleItem = items[middleIndex]
+    for i in range(low, high):
+        if i == middleIndex:
+            continue
+        elif items[i] <= middleItem and i > middleIndex:
+            middleIndex += 1
+            items.insert(0, items.pop(i))
+        elif items[i] > middleItem and i < middleIndex:
+            middleIndex -= 1
+            items.append(items.pop(i))
+
+    return middleIndex
 
 
 def quick_sort(items, low=None, high=None):
@@ -93,6 +202,49 @@ def quick_sort(items, low=None, high=None):
     # TODO: Check if list or range is so small it's already sorted (base case)
     # TODO: Partition items in-place around a pivot and get index of pivot
     # TODO: Sort each sublist range by recursively calling quick sort
+    #
+    # CHECK NONE HERE
+    if low is None or high is None:
+        low = 0
+        high = len(items) - 1
+
+    print("Items Before: ")
+    print(items)
+
+    middleIndex = partition(items, low, high)
+    if middleIndex is not None:
+        print("Middle: " + str(middleIndex))
+    else:
+        print("MIDDLE IS NONE")
+    print("Low: " + str(low))
+    print("High: " + str(high))
+    print("Items Now: ")
+    print(items)
+    if middleIndex is not None:
+        quick_sort(items, low, middleIndex - 1)
+        quick_sort(items, middleIndex + 1, high)
+
+    # done = False
+    # original_middleIndex = middleIndex
+    # # Left hand side
+    # while not done:
+    #     if middleIndex is None:
+    #         done = True
+    #     else:
+    #         new_high = middleIndex - 1
+    #         middleIndex = partition(items, low, new_high)
+    #
+    # done = False
+    # middleIndex = original_middleIndex
+    # # Right hand side
+    # while not done:
+    #     if middleIndex is None:
+    #         done = True
+    #     else:
+    #         new_low = middleIndex + 1
+    #         middleIndex = partition(items, new_low, high)
+
+    # return items
 
 
 def counting_sort(numbers):
@@ -188,3 +340,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # lis = [3,1,6,5,22,3,5,7,0]
+    # print(lis)
+    # print(bubble_sort(lis))

@@ -33,6 +33,7 @@ class LinkedList(object):
         """Return a string representation of this linked list."""
         return 'LinkedList({!r})'.format(self.items())
 
+    ''' This function is O(N) '''
     def items(self):
         """Return a list of all items in this linked list.
         Best and worst case running time: Theta(n) for n items in the list
@@ -50,10 +51,12 @@ class LinkedList(object):
         # Now result contains the data from all nodes
         return result  # Constant time to return a list
 
+    ''' This function is O(1) '''
     def is_empty(self):
         """Return True if this linked list is empty, or False."""
         return self.head is None
 
+    ''' This function is O(N) '''
     def length(self):
         """Return the length of this linked list by traversing its nodes.
         Best and worst case running time: ??? under what conditions? [TODO]"""
@@ -70,6 +73,7 @@ class LinkedList(object):
         # Now node_count contains the number of nodes
         return node_count
 
+    ''' This function is O(N) '''
     def get_at_index(self, index, node=False):
         """Return the item at the given index in this linked list, or
         raise ValueError if the given index is out of range of the list size.
@@ -94,6 +98,7 @@ class LinkedList(object):
 
 
 
+    ''' This function is O(N) '''
     def insert_at_index(self, index, item):
         """Insert the given item at the given index in this linked list, or
         raise ValueError if the given index is out of range of the list size.
@@ -119,6 +124,7 @@ class LinkedList(object):
         self.size += 1
 
 
+    ''' This function is O(1) '''
     def append(self, item):
         """Insert the given item at the tail of this linked list.
         Best and worst case running time: ??? under what conditions? [TODO]"""
@@ -135,6 +141,7 @@ class LinkedList(object):
         self.tail = new_node
         self.size += 1
 
+    ''' This function is O(1) '''
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
         Best and worst case running time: ??? under what conditions? [TODO]"""
@@ -151,6 +158,7 @@ class LinkedList(object):
         self.head = new_node
         self.size += 1
 
+    ''' This function is O(N) '''
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality.
         Best case running time: Omega(1) if item is near the head of the list.
@@ -169,6 +177,7 @@ class LinkedList(object):
         # We never found data satisfying quality, but have to return something
         return None  # Constant time to return None
 
+    ''' This function is O(N) '''
     def replace(self, old_item, new_item):
         """Replace the given old_item in this linked list with given new_item
         using the same node, or raise ValueError if old_item is not found.
@@ -189,14 +198,30 @@ class LinkedList(object):
         raise ValueError("No {} found".format(old_item))
 
 
+    ''' This function is O(N) '''
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
         Best case running time: ??? under what conditions? [TODO]
         Worst case running time: ??? under what conditions? [TODO]"""
+        if self.size is 0:
+            # Otherwise raise an error to tell the user that delete has failed
+            raise ValueError('Item not found: {}'.format(item))
+
+        # Check if we found a node at the head
+        if item is self.head.data:
+            # Update head to the next node
+            if self.size is 1:
+                self.head = None
+                self.tail = None
+            else:
+                self.head = self.head.next
+            self.size -= 1
+            return
+
         # Start at the head node
-        node = self.head
+        node = self.head.next
         # Keep track of the node before the one containing the given item
-        previous = None
+        previous = self.head
         # Create a flag to track if we have found the given item
         found = False
         # Loop until we have found the given item or the node is None
@@ -211,26 +236,17 @@ class LinkedList(object):
                 node = node.next
         # Check if we found the given item or we never did and reached the tail
         if found:
-            # Check if we found a node in the middle of this linked list
-            if node is not self.head and node is not self.tail:
-                # Update the previous node to skip around the found node
-                previous.next = node.next
-                # Unlink the found node from its next node
-                node.next = None
-            # Check if we found a node at the head
-            if node is self.head:
-                # Update head to the next node
-                self.head = node.next
-                # Unlink the found node from the next node
-                node.next = None
             # Check if we found a node at the tail
             if node is self.tail:
                 # Check if there is a node before the found node
-                if previous is not None:
-                    # Unlink the previous node from the found node
-                    previous.next = None
+                previous.next = None
                 # Update tail to the previous node regardless
                 self.tail = previous
+
+            # Check if we found a node in the middle of this linked list
+            else:
+                # Update the previous node to skip around the found node
+                previous.next = node.next
             self.size -= 1
         else:
             # Otherwise raise an error to tell the user that delete has failed
